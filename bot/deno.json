@@ -1,5 +1,9 @@
 {
   "name": "@tomsfactory/bot",
   "version": "0.0.1",
-  "exports": "./mod.ts"
+  "exports": "./mod.ts",
+  "license": "MIT",
+  "fmt": {
+    "singleQuote": true
+  }
 }
