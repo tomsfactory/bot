@@ -1,6 +1,5 @@
 import { assertEquals } from '@std/assert';
-import { add } from '@tomsfactory/bot';
-import { subtract } from './mod.ts';
+import { add, subtract } from './mod.ts';
 
 Deno.test(function addTest() {
   assertEquals(add(2, 3), 5);
