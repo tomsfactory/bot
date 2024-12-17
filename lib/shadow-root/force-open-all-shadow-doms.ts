@@ -1,4 +1,4 @@
-import type { Page } from 'npm:playwright';
+import type { Page } from 'playwright';
 
 /**
  * Force open all shadow doms on the page and all iframes

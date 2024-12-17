@@ -9,7 +9,7 @@ set -eo pipefail
 deno fmt --check
 deno lint
 deno test -A
-deno publish --dry-run
+deno publish --dry-run --allow-dirty
 
 "
 
