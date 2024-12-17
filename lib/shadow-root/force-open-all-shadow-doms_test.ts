@@ -1,9 +1,8 @@
 import { describe, it } from 'jsr:@std/testing/bdd';
 import type { Page } from 'npm:playwright';
 import { forceOpenAllShadowDoms } from './force-open-all-shadow-doms.ts';
-import { assertThrows } from '@std/assert/throws';
 import { assertSpyCall, type Spy, spy } from 'jsr:@std/testing/mock';
-import { assert, assertRejects } from '@std/assert';
+import { assert } from '@std/assert';
 
 const overwriteAttachShadowScript: string = `
       if (!Element.prototype._attachShadow) {
