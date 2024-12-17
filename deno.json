@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "exports": {
     ".": "./mod.ts",
-    "./cloudflare": "./cloudflare/mod.ts",
-    "./shadow-root": "./shadow-root/mod.ts"
+    "./cloudflare": "./lib/cloudflare/mod.ts",
+    "./shadow-root": "./lib/shadow-root/mod.ts"
   },
   "license": "MIT",
   "tasks": {
