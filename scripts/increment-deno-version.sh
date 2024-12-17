@@ -57,3 +57,5 @@ mv ./deno.json.tmp ./deno.json
 rm -f ./deno.json.tmp
 
 echo "Finished incrementing version"
+
+
