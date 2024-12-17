@@ -1,11 +1,14 @@
 {
   "name": "@tomsfactory/bot",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "exports": "./mod.ts",
   "license": "MIT",
   "tasks": {
     "run": "deno run --allow-net --allow-read --allow-write main.ts",
-    "test": "deno test --allow-net --allow-read --allow-write mod_test.ts"
+    "test": "deno test --allow-net --allow-read --allow-write mod_test.ts",
+    "version:major": "./scripts/increment-deno-version.sh major",
+    "version:minor": "./scripts/increment-deno-version.sh minor",
+    "version:patch": "./scripts/increment-deno-version.sh patch"
   },
   "fmt": {
     "singleQuote": true
