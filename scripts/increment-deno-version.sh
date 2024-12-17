@@ -68,4 +68,7 @@ echo "Finished incrementing version. Committing changes..."
 git add ./deno.json
 git commit -m "chore(package): bump version from $deno_version to $next_version"
 
+# Tag the commit with the new version
+git tag -a "v$next_version" -m "v$next_version"
+
 
