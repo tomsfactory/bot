@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Ensure git has no changes before running the script
+if [ -n "$(git status --porcelain)" ]; then
+  echo "There are uncommitted changes in the working directory. Please commit or stash them before running this script."
+  exit 1
+fi
+
 # get first argument as the step name (e.g. "major", "minor", "patch")
 increment_type=$1
 
@@ -56,6 +62,10 @@ mv ./deno.json.tmp ./deno.json
 
 rm -f ./deno.json.tmp
 
-echo "Finished incrementing version"
+echo "Finished incrementing version. Committing changes..."
+
+# Commit the changes
+git add ./deno.json
+git commit -m "chore(package): bump version from $deno_version to $next_version"
 
 
