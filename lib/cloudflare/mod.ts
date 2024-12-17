@@ -1,3 +1,3 @@
-export function todo() {
+export function todo(): string {
   return 'TODO';
 }
