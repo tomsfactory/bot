@@ -3,6 +3,7 @@ import type { Page } from 'npm:playwright';
 import { forceOpenAllShadowDoms } from './force-open-all-shadow-doms.ts';
 import { assertSpyCall, type Spy, spy } from 'jsr:@std/testing/mock';
 import { assert } from '@std/assert';
+import { getSpy } from '../test/get-spy.ts';
 
 const overwriteAttachShadowScript: string = `
       if (!Element.prototype._attachShadow) {
@@ -27,11 +28,7 @@ describe('forceOpenAllShadowDoms', () => {
 
   it('should NOT propagate error when evaluating script immediately', async () => {
     const page = mockPage();
-    page.evaluate = spy<
-      Page,
-      Parameters<Page['evaluate']>,
-      ReturnType<Page['evaluate']>
-    >(() => {
+    page.evaluate = getSpy<Page, Page['evaluate']>(() => {
       throw new Error('test error');
     });
 
@@ -62,11 +59,7 @@ describe('forceOpenAllShadowDoms', () => {
 
     assert(onLoad !== undefined);
 
-    page.evaluate = spy<
-      Page,
-      Parameters<Page['evaluate']>,
-      ReturnType<Page['evaluate']>
-    >(() => {
+    page.evaluate = getSpy<Page, Page['evaluate']>(() => {
       throw new Error('test error');
     });
 
@@ -103,11 +96,7 @@ describe('forceOpenAllShadowDoms', () => {
 
     assert(onFrameNavigated !== undefined);
 
-    page.evaluate = spy<
-      Page,
-      Parameters<Page['evaluate']>,
-      ReturnType<Page['evaluate']>
-    >(() => {
+    page.evaluate = getSpy<Page, Page['evaluate']>(() => {
       throw new Error('test error');
     });
 
@@ -119,11 +108,7 @@ describe('forceOpenAllShadowDoms', () => {
 
 function mockPage() {
   return {
-    evaluate: spy<
-      Page,
-      Parameters<Page['evaluate']>,
-      ReturnType<Page['evaluate']>
-    >(),
+    evaluate: getSpy<Page, Page['evaluate']>(),
     on: spy<
       Page,
       Parameters<Page['on']>,
