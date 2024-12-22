@@ -4,6 +4,7 @@
   "exports": {
     ".": "./mod.ts",
     "./cloudflare": "./lib/cloudflare/mod.ts",
+    "./puppeteer": "./lib/puppeteer/mod.ts",
     "./shadow-root": "./lib/shadow-root/mod.ts"
   },
   "license": "MIT",

@@ -1,4 +1,4 @@
-import type { BrowserType } from 'npm:playwright';
+import type { BrowserType } from 'playwright';
 import type { NativeCommand } from '../deno/native-command.ts';
 
 /**
