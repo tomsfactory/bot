@@ -1,9 +1,12 @@
 import { spy } from 'jsr:@std/testing/mock';
-import type { DenoCommand } from './native-command.ts';
 
+/**
+ * Returns a mock {@link Deno.Command} that resolves with the given response.
+ * @param mockResponse
+ */
 export function getMockDenoCommand(
   mockResponse: string = '',
-): Pick<DenoCommand, 'output'> {
+): Pick<Deno.Command, 'output'> {
   return {
     output: spy(() =>
       Promise.resolve({
@@ -16,11 +19,3 @@ export function getMockDenoCommand(
     ),
   };
 }
-//
-// export function getMockNativeCommand() {
-//   return spy<
-//     DenoCommand,
-//     [string, Deno.CommandOptions?],
-//     DenoCommand
-//   >(() => mockDenoCommand);
-// }

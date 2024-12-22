@@ -2,6 +2,18 @@ import type { Page } from 'playwright';
 
 /**
  * Force open all shadow doms on the page and all iframes
+ * @example
+ * ```ts
+ * import { forceOpenAllShadowDoms } from '@tomsfactory/bot/shadow-root';
+ * import { chromium, Page } from "npm:playwright";
+ *
+ * const browser = await chromium.launch({
+ *  headless: false,
+ *  executablePath: '/usr/bin/google-chrome',
+ * });
+ * const page: Page = await browser.newPage();
+ * await forceOpenAllShadowDoms(page);
+ * ```
  */
 export async function forceOpenAllShadowDoms(
   page: Pick<Page, 'evaluate' | 'on' | 'url'>,

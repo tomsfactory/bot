@@ -10,6 +10,7 @@ deno fmt --check
 deno lint
 deno test -A
 deno publish --dry-run --allow-dirty
+deno doc --lint ./lib
 
 "
 

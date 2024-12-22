@@ -1,6 +1,7 @@
-export type DenoCommand = Pick<Deno.Command, 'output'>;
-
+/**
+ * A function that spawns a native command and returns output from the command.
+ */
 export type NativeCommand = (
   command: string,
   options?: Deno.CommandOptions,
-) => Pick<DenoCommand, 'output'>;
+) => Pick<Deno.Command, 'output'>;
