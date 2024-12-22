@@ -17,3 +17,5 @@ deno doc --lint ./lib
 echo "$script_content" > .git/hooks/pre-commit
 
 chmod +x .git/hooks/pre-commit
+
+echo "Pre-commit hook added successfully."
