@@ -36,3 +36,6 @@ jobs:
 
       - name: Run tests
         run: deno test -A
+
+      - name: Lint documentation
+        run: deno doc --lint ./lib
