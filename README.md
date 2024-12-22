@@ -1,5 +1,24 @@
 # @tomsfactory/bot
 
+Uses Deno 2.
+
+## Getting started using this package
+
+1. Install the package with `deno add jsr:@tomsfactory/bot`
+2. Import the symbol you want in to your repository and use:
+
+```ts
+import { forceOpenAllShadowDoms } from '@tomsfactory/bot/shadow-root';
+import { chromium, Page } from 'npm:playwright';
+
+const browser = await chromium.launch({
+  headless: false,
+  executablePath: '/usr/bin/google-chrome',
+});
+const page: Page = await browser.newPage();
+await forceOpenAllShadowDoms(page);
+```
+
 ## Development workflow
 
 1. If it's the first time you're working in this repo on your current machine,
