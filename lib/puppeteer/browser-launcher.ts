@@ -1,46 +1,43 @@
-import type { BrowserType } from 'playwright';
-import type { NativeCommand } from '../deno/native-command.ts';
+import type {
+  Browser,
+  LaunchOptions,
+  PuppeteerNode,
+} from 'rebrowser-puppeteer-core';
+import puppeteer from 'rebrowser-puppeteer-core';
 
 /**
  * Options for BrowserLauncher
  */
-export interface BrowserLauncherOptions {
+export interface BrowserLauncherOptions extends LaunchOptions {
   /**
-   * If this and {@link separateBrowserPath} are set, a separate browser will be launched with the given port.
-   */
-  separateBrowserPort?: number;
-
-  /**
-   * If this and {@link separateBrowserPort} are set, a separate browser at the path specified here will be launched.
+   * The location on disk of the puppeteer compatible browser to launch
    */
   separateBrowserPath?: string;
 }
 
 /**
- * A class that launches a playwright browser.
+ * A pick of the BrowserType interface that only includes the launch and connect methods. Connect is added to the BrowserType because Typescript can't handle the method overload.
+ */
+export type BrowserTypeForLauncher = Pick<PuppeteerNode, 'launch'>;
+
+/**
+ * A class that launches a puppeteer browser.
  */
 export class BrowserLauncher {
   /**
    * Constructs a new BrowserLauncher.
    *
    * @param browserType The browser type to launch.
-   * @param nativeCommand A function that spawns a native command and returns output from the command.
-   *
    * @example
    * ```ts
-   * import { chromium } from 'npm:playwright';
    * import { BrowserLauncher } from '@tomsfactory/bot/puppeteer';
    *
-   * const launcher = new BrowserLauncher(chromium);
+   * const launcher = new BrowserLauncher();
    * await launcher.launch();
    * ```
    */
   constructor(
-    private readonly browserType: Pick<BrowserType, 'launch'>,
-    private readonly nativeCommand: NativeCommand = (
-      command: string,
-      options?: Deno.CommandOptions,
-    ) => new Deno.Command(command, options),
+    private readonly browserType: BrowserTypeForLauncher = puppeteer,
   ) {
   }
 
@@ -49,31 +46,16 @@ export class BrowserLauncher {
    *
    * @param options Options for launching the browser.
    */
-  async launch(options?: BrowserLauncherOptions): Promise<void> {
-    this.assertSeparateBrowserOptionsAllOrNothing(options);
-    this.spawnSeparateBrowser(options);
-    await this.browserType.launch();
-  }
-
-  /** @internal */
-  private assertSeparateBrowserOptionsAllOrNothing(
-    options: BrowserLauncherOptions | undefined,
-  ) {
-    if (!options?.separateBrowserPort != !options?.separateBrowserPath) {
-      throw new Error(
-        'separateBrowserPort must be used with separateBrowserPath',
-      );
-    }
-  }
-
-  /** @internal */
-  private spawnSeparateBrowser(options?: BrowserLauncherOptions) {
-    if (!options?.separateBrowserPort) return;
-
-    const _command = this.nativeCommand(options.separateBrowserPath!, {
+  launch(options?: BrowserLauncherOptions): Promise<Browser> {
+    return this.browserType.launch({
+      executablePath: options?.separateBrowserPath ?? '/usr/bin/google-chrome',
+      headless: false,
+      defaultViewport: null,
       args: [
-        `--remote-debugging-port=${options.separateBrowserPort}`,
+        // navigator.webdriver = true indicates that browser is automated. Use --disable-blink-features=AutomationControlled switch for Chrome. See https://bot-detector.rebrowser.net/
+        '--disable-blink-features=AutomationControlled',
       ],
+      ...options,
     });
   }
 }

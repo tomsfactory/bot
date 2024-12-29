@@ -1,5 +1,5 @@
 import { describe, it } from 'jsr:@std/testing/bdd';
-import type { Page } from 'npm:playwright';
+import type { Page } from 'rebrowser-puppeteer-core';
 import { forceOpenAllShadowDoms } from './force-open-all-shadow-doms.ts';
 import { assertSpyCall, type Spy, spy } from 'jsr:@std/testing/mock';
 import { assert } from '@std/assert';
@@ -30,7 +30,7 @@ describe('forceOpenAllShadowDoms', () => {
     const page = mockPage();
     page.evaluate = getSpy<Page, Page['evaluate']>(() => {
       throw new Error('test error');
-    });
+    }) as unknown as Page['evaluate'] & Spy;
 
     const result = await forceOpenAllShadowDoms(page);
 
@@ -61,7 +61,7 @@ describe('forceOpenAllShadowDoms', () => {
 
     page.evaluate = getSpy<Page, Page['evaluate']>(() => {
       throw new Error('test error');
-    });
+    }) as unknown as Page['evaluate'] & Spy;
 
     const result = await onLoad.args[1](); // call the load event
 
@@ -98,7 +98,7 @@ describe('forceOpenAllShadowDoms', () => {
 
     page.evaluate = getSpy<Page, Page['evaluate']>(() => {
       throw new Error('test error');
-    });
+    }) as unknown as Page['evaluate'] & Spy;
 
     const result = await onFrameNavigated.args[1]({ url: () => 'test-url' }); // call the framenavigated event
 
@@ -108,7 +108,9 @@ describe('forceOpenAllShadowDoms', () => {
 
 function mockPage() {
   return {
-    evaluate: getSpy<Page, Page['evaluate']>(),
+    evaluate: getSpy<Page, Page['evaluate']>() as unknown as
+      & Page['evaluate']
+      & Spy,
     on: spy<
       Page,
       Parameters<Page['on']>,

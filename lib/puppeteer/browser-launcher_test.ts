@@ -1,67 +1,106 @@
 import { describe, it } from 'jsr:@std/testing/bdd';
-import type { BrowserType } from 'npm:playwright';
-import { BrowserLauncher } from './browser-launcher.ts';
-import { assertSpyCall, assertSpyCalls, spy } from 'jsr:@std/testing/mock';
-import { getMockDenoCommand } from '../deno/mock-native-command.ts';
-import { assertRejects } from 'https://deno.land/std@0.154.0/testing/asserts.ts';
+import type { PuppeteerNode } from 'rebrowser-puppeteer-core';
+import {
+  BrowserLauncher,
+  type BrowserTypeForLauncher,
+} from './browser-launcher.ts';
+import { expect, fn } from '@std/expect';
+
 import { getSpy } from '../test/get-spy.ts';
+
+function getMockBrowserType() {
+  return {
+    launch: getSpy<PuppeteerNode, PuppeteerNode['launch']>(),
+  };
+}
+
+const defaultBrowserLauncherArgs = {
+  mockBrowserType: getMockBrowserType(),
+};
+
+function getBrowserLauncher({
+  mockBrowserType,
+}: {
+  mockBrowserType?: BrowserTypeForLauncher;
+} = defaultBrowserLauncherArgs) {
+  return new BrowserLauncher(
+    mockBrowserType as BrowserTypeForLauncher ??
+      defaultBrowserLauncherArgs.mockBrowserType,
+  );
+}
 
 describe('BrowserLauncher', () => {
   it('should launch browser', async () => {
-    const mockBrowserType = {
-      launch: getSpy<BrowserType, BrowserType['launch']>(),
-    };
-    const launcher = new BrowserLauncher(mockBrowserType);
+    const mockBrowserType = { launch: fn() };
+    const launcher = getBrowserLauncher({
+      mockBrowserType: mockBrowserType as BrowserTypeForLauncher,
+    });
 
     await launcher.launch();
 
-    assertSpyCalls(mockBrowserType.launch, 1);
+    expect(mockBrowserType.launch).toHaveBeenCalledTimes(1);
   });
 
-  it('should throw if passed separateBrowserPORT but no separateBrowserPATH', () => {
-    const mockBrowserType = {
-      launch: getSpy<BrowserType, BrowserType['launch']>(),
-    };
-    const launcher = new BrowserLauncher(mockBrowserType);
-
-    assertRejects(async () => {
-      await launcher.launch({ separateBrowserPort: 8080 });
-    }, 'separateBrowserPort must be used with separateBrowserPath');
-  });
-
-  it('should throw if passed separateBrowserPATH but no separateBrowserPORT', () => {
-    const mockBrowserType = {
-      launch: getSpy<BrowserType, BrowserType['launch']>(),
-    };
-    const launcher = new BrowserLauncher(mockBrowserType);
-
-    assertRejects(async () => {
-      await launcher.launch({ separateBrowserPath: '/usr/bin/chrome' });
-    }, 'separateBrowserPort must be used with separateBrowserPath');
-  });
-
-  it('should launch separate browser with separate* args', async () => {
-    const expectedPath = '/usr/bin/google-chrome';
-    const expectedPort = 8080;
-    const mockBrowserType = {
-      launch: getSpy<BrowserType, BrowserType['launch']>(),
-    };
-    const mockDenoCommand = getMockDenoCommand();
-    const mockNativeCommand = spy(() => mockDenoCommand);
-    const launcher = new BrowserLauncher(mockBrowserType, mockNativeCommand);
-
-    await launcher.launch({
-      separateBrowserPort: expectedPort,
-      separateBrowserPath: expectedPath,
+  it('should launch browser with defaults', async () => {
+    const mockBrowserType = { launch: fn() };
+    const launcher = getBrowserLauncher({
+      mockBrowserType: mockBrowserType as BrowserTypeForLauncher,
     });
 
-    assertSpyCall(mockNativeCommand, 0, {
+    await launcher.launch();
+
+    expect(mockBrowserType.launch).toHaveBeenCalledWith({
       args: [
-        expectedPath,
-        {
-          args: [`--remote-debugging-port=${expectedPort}`],
-        },
+        '--disable-blink-features=AutomationControlled',
       ],
+      defaultViewport: null,
+      executablePath: '/usr/bin/google-chrome',
+      headless: false,
     });
+  });
+
+  it('should launch browser with headless: true', async () => {
+    const mockBrowserType = { launch: fn() };
+    const launcher = getBrowserLauncher({
+      mockBrowserType: mockBrowserType as BrowserTypeForLauncher,
+    });
+
+    await launcher.launch({ headless: true });
+
+    expect(mockBrowserType.launch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        headless: true,
+      }),
+    );
+  });
+
+  it('should launch browser with headless: false', async () => {
+    const mockBrowserType = { launch: fn() };
+    const launcher = getBrowserLauncher({
+      mockBrowserType: mockBrowserType as BrowserTypeForLauncher,
+    });
+
+    await launcher.launch({ headless: false });
+
+    expect(mockBrowserType.launch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        headless: false,
+      }),
+    );
+  });
+
+  it('should pass all other options to launch', async () => {
+    const mockBrowserType = { launch: fn() };
+    const launcher = getBrowserLauncher({
+      mockBrowserType: mockBrowserType as BrowserTypeForLauncher,
+    });
+
+    await launcher.launch({ headless: false, slowMo: 100 });
+
+    expect(mockBrowserType.launch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        headless: false,
+      }),
+    );
   });
 });

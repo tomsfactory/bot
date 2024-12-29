@@ -1,17 +1,15 @@
-import type { Page } from 'playwright';
+import type { Page } from 'rebrowser-puppeteer-core';
 
 /**
  * Force open all shadow doms on the page and all iframes
  * @example
  * ```ts
  * import { forceOpenAllShadowDoms } from '@tomsfactory/bot/shadow-root';
- * import { chromium, Page } from "npm:playwright";
+ * import { BrowserLauncher } from '@tomsfactory/bot/puppeteer';
  *
- * const browser = await chromium.launch({
- *  headless: false,
- *  executablePath: '/usr/bin/google-chrome',
- * });
- * const page: Page = await browser.newPage();
+ * const launcher = new BrowserLauncher();
+ * const browser = await launcher.launch();
+ * const page = await browser.page();
  * await forceOpenAllShadowDoms(page);
  * ```
  */

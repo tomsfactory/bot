@@ -18,6 +18,11 @@ type ReturnSpy<
  * Returns a spy function with the types of a known function
  * @param implementation
  * @returns A {@link Spy} function
+ *
+ * @example
+ * ```ts
+ * const pageEvaluateSpy = getSpy<Page, Page['evaluate']>();
+ * ```
  */
 export function getSpy<
   Self = unknown,
