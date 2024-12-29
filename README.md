@@ -17,10 +17,11 @@ as the default browser to avoid bot detection.
 ```ts
 import { forceOpenAllShadowDoms } from '@tomsfactory/bot/shadow-root';
 import { BrowserLauncher } from '@tomsfactory/bot/puppeteer';
+import type { Browser, Page } from 'npm:rebrowser-puppeteer-core';
 
 const launcher = new BrowserLauncher();
-const browser = await launcher.launch();
-const page = await browser.page();
+const browser: Browser = await launcher.launch();
+const page: Page = await browser.page();
 await forceOpenAllShadowDoms(page);
 ```
 
