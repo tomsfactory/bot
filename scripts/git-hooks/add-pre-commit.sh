@@ -8,7 +8,7 @@ set -eo pipefail
 
 deno fmt --check
 deno lint
-deno test -A
+deno task test
 deno publish --dry-run --allow-dirty
 deno doc --lint ./lib
 
