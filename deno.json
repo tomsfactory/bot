@@ -14,7 +14,8 @@
     "test:coverage": "deno task test --coverage ; deno coverage --detailed",
     "version:major": "./scripts/increment-deno-version.sh major",
     "version:minor": "./scripts/increment-deno-version.sh minor",
-    "version:patch": "./scripts/increment-deno-version.sh patch"
+    "version:patch": "./scripts/increment-deno-version.sh patch",
+    "version:autosemver": "./scripts/auto-increment-deno-version.sh"
   },
   "fmt": {
     "singleQuote": true

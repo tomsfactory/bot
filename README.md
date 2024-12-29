@@ -31,8 +31,11 @@ await forceOpenAllShadowDoms(page);
    install the git hooks with `./scripts/add-git-hooks.sh`.
 2. Create a branch
 3. Make changes on branch
-4. Once reviewed, increase package version with
-   `deno task version:<minor|major|patch>` accordingly
-5. Merge in to master and the package will be deployed to
+4. Commit using
+   [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/#summary)
+   syntax
+5. Once reviewed, increase package version with
+   `deno task version:<minor|major|patch|autosemver>` accordingly
+6. Merge in to master and the package will be deployed to
    [jsr](https://jsr.io/@tomsfactory/bot) via a
    [github workflow](.github/workflows/publish.yml)
