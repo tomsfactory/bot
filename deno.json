@@ -4,13 +4,16 @@
   "exports": {
     ".": "./mod.ts",
     "./cloudflare": "./lib/cloudflare/mod.ts",
-    "./puppeteer": "./lib/puppeteer/mod.ts",
+    "./browser-control": "./lib/browser-control/mod.ts",
     "./shadow-root": "./lib/shadow-root/mod.ts"
   },
   "license": "MIT",
   "tasks": {
     "run": "deno run --allow-net --allow-read --allow-write main.ts",
-    "test": "deno test --allow-net --allow-read --allow-write --allow-sys --allow-env --allow-run --trace-leaks",
+    "test": "deno task test:all",
+    "test:all": "deno test --allow-net --allow-read --allow-write --allow-sys --allow-env --allow-run --env-file=.env --trace-leaks",
+    "test:integration": "deno task test '**/*integration_test.ts'",
+    "test:unit": "deno task test '**/*_test.ts' --ignore='**/*integration_test.ts'",
     "test:coverage": "deno task test --coverage ; deno coverage --detailed",
     "version:major": "./scripts/increment-deno-version.sh major",
     "version:minor": "./scripts/increment-deno-version.sh minor",
@@ -37,6 +40,7 @@
     "@std/expect": "jsr:@std/expect@^1.0.10",
     "@std/internal": "jsr:@std/internal@^1",
     "@std/testing": "jsr:@std/testing@^1.0.8",
-    "rebrowser-puppeteer-core": "npm:rebrowser-puppeteer-core@^23.10.3"
+    "rebrowser-puppeteer-core": "npm:rebrowser-puppeteer-core@^23.10.3",
+    "rebrowser-playwright-core": "npm:rebrowser-playwright-core@^1.49.1"
   }
 }

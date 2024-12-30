@@ -1,30 +1,26 @@
 import { afterEach, beforeEach, describe, it } from 'jsr:@std/testing/bdd';
 import { expect } from 'jsr:@std/expect';
-import { BrowserLauncher } from './browser-launcher.ts';
+import { PuppeteerBrowserLauncher } from './puppeteer-browser-launcher.ts';
 import type { Browser } from 'rebrowser-puppeteer-core';
 import type CdpFrame from 'rebrowser-puppeteer-core/lib/cdp-frame';
+import type { RebrowserBotDetectorResult } from '../bot-detection/rebrowser-bot-detector-result.ts';
+import { BROWSER_EXECUTABLE_PATH } from '../../env/env-keys.ts';
 
-interface RebrowserBotDetectorResult {
-  type: string;
-  rating: number;
-  note: string;
-}
-
-describe('BrowserLauncher Integration', () => {
+describe('Puppeteer BrowserLauncher Integration', () => {
   const TIME_FOR_WAITING_FOR_SWAP = 100;
 
   let browser: Browser;
 
   beforeEach(async () => {
-    const launcher = new BrowserLauncher();
-    try {
-      browser = await launcher.launch({
-        headless: true,
-      });
-    } catch (e) {
-      console.error('failed to launch browser', e);
-      throw e;
-    }
+    const launcher = new PuppeteerBrowserLauncher();
+    console.debug(
+      'Deno.env.get(BROWSER_EXECUTABLE_PATH): ',
+      Deno.env.get(BROWSER_EXECUTABLE_PATH),
+    );
+    browser = await launcher.launch({
+      executablePath: Deno.env.get(BROWSER_EXECUTABLE_PATH),
+      headless: true,
+    });
   });
 
   afterEach(async () => {

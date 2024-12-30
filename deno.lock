@@ -13,6 +13,7 @@
     "jsr:@std/path@^1.0.8": "1.0.8",
     "jsr:@std/testing@*": "1.0.8",
     "jsr:@std/testing@^1.0.8": "1.0.8",
+    "npm:rebrowser-playwright-core@^1.49.1": "1.49.1",
     "npm:rebrowser-puppeteer-core@^23.10.3": "23.10.3_devtools-protocol@0.0.1367902"
   },
   "jsr": {
@@ -362,6 +363,9 @@
     "queue-tick@1.0.1": {
       "integrity": "sha512-kJt5qhMxoszgU/62PLP1CJytzd2NKetjSRnyuj31fDd3Rlcz3fzlFdFLD1SItunPwyqEOkca6GbV612BWfaBag=="
     },
+    "rebrowser-playwright-core@1.49.1": {
+      "integrity": "sha512-7M+TNWBRnJ9b84bAVIopn2a/R/V0D8cPt+6qNTJFiBDjwD12hzp7e5GmLSM+LxEL/GdqnTlySjes/itzmEcBQA=="
+    },
     "rebrowser-puppeteer-core@23.10.3_devtools-protocol@0.0.1367902": {
       "integrity": "sha512-oWwuFg3XoZUkAt6Te4zTU6sQeS39I9tctjdSEiDPa76MF47R0IfLX8VQhyRwwzMySqD5L1wambYcWyEAN0b9AA==",
       "dependencies": [
@@ -520,6 +524,7 @@
       "jsr:@std/expect@^1.0.10",
       "jsr:@std/internal@1",
       "jsr:@std/testing@^1.0.8",
+      "npm:rebrowser-playwright-core@^1.49.1",
       "npm:rebrowser-puppeteer-core@^23.10.3"
     ]
   }

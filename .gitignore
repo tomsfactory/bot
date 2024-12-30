@@ -2,3 +2,5 @@
 coverage
 docs
 node_modules
+.env
+!.env.template
