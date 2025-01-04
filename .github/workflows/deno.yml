@@ -30,7 +30,6 @@ jobs:
 
       - name: Setup Chrome
         uses: browser-actions/setup-chrome@v1
-        run: chrome --version
 
       - name: Verify formatting
         run: deno fmt --check
