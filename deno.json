@@ -1,6 +1,6 @@
 {
   "name": "@tomsfactory/bot",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "exports": {
     ".": "./mod.ts",
     "./cloudflare": "./lib/cloudflare/mod.ts",
