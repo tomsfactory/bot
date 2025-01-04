@@ -20,6 +20,10 @@ jobs:
         with:
           deno-version: v2.x
 
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+        run: chrome --version
+
       - name: Verify formatting
         run: deno fmt --check
 
@@ -27,7 +31,7 @@ jobs:
         run: deno lint
 
       - name: Run tests
-        run: deno test -A
+        run: BROWSER_EXECUTABLE_PATH=${{ steps.setup-chrome.outputs.chrome-path }} deno test -A
 
       - name: Lint documentation
         run: deno doc --lint ./lib
