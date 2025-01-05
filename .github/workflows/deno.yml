@@ -17,29 +17,6 @@ permissions:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Setup repo
-        uses: actions/checkout@v4
-
-      - name: Setup Deno
-        uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-
-      - name: Verify formatting
-        run: deno fmt --check
-
-      - name: Run linter
-        run: deno lint
-
-      - name: Setup Chrome
-        id: setup-chrome
-        uses: browser-actions/setup-chrome@v1
-
-      - name: Run tests
-        run: BROWSER_EXECUTABLE_PATH="${{ steps.setup-chrome.outputs.chrome-path }}" deno test -A
-
-      - name: Lint documentation
-        run: deno doc --lint ./lib
+    uses: ./.github/workflows/verify.yml
+    with:
+      deno-version: v2.x

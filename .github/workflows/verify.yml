@@ -1,0 +1,41 @@
+name: Common Workflow
+
+on:
+  workflow_call:
+    inputs:
+      deno-version:
+        required: false
+        type: string
+        default: 'v2.x'
+    secrets: {}
+
+jobs:
+  common:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: ${{ inputs.deno-version }}
+
+      - name: Verify formatting
+        run: deno fmt --check
+
+      - name: Run linter
+        run: deno lint
+
+      - name: Setup Chrome
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Run tests
+        run: BROWSER_EXECUTABLE_PATH="${{ steps.setup-chrome.outputs.chrome-path }}" deno test -A
+
+      - name: Lint documentation
+        run: deno doc --lint ./lib
