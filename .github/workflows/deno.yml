@@ -29,6 +29,7 @@ jobs:
           deno-version: v2.x
 
       - name: Setup Chrome
+        id: setup-chrome
         uses: browser-actions/setup-chrome@v1
 
       - name: Verify formatting
