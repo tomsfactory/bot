@@ -32,7 +32,7 @@ jobs:
         id: setup-chrome
         uses: browser-actions/setup-chrome@v1
         with:
-          chrome-version: stable
+          chrome-version: 131.0.6778.204
 
       - name: Run tests
         run: BROWSER_EXECUTABLE_PATH="${{ steps.setup-chrome.outputs.chrome-path }}" deno test -A
