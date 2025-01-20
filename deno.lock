@@ -13,6 +13,8 @@
     "jsr:@std/path@^1.0.8": "1.0.8",
     "jsr:@std/testing@*": "1.0.8",
     "jsr:@std/testing@^1.0.8": "1.0.8",
+    "npm:ghost-cursor@1.3.0": "1.3.0",
+    "npm:ghost-cursor@^1.3.0": "1.3.0",
     "npm:rebrowser-playwright-core@^1.49.1": "1.49.1",
     "npm:rebrowser-puppeteer-core@^23.10.3": "23.10.3_devtools-protocol@0.0.1367902"
   },
@@ -76,6 +78,9 @@
     },
     "@tootallnate/quickjs-emscripten@0.23.0": {
       "integrity": "sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA=="
+    },
+    "@types/bezier-js@4.1.3": {
+      "integrity": "sha512-FNVVCu5mx/rJCWBxLTcL7oOajmGtWtBTDjq6DSUWUI12GeePivrZZXz+UgE0D6VYsLEjvExRO03z4hVtu3pTEQ=="
     },
     "@types/node@22.5.4": {
       "integrity": "sha512-FDuKUJQm/ju9fT/SeX/6+gBzoPzlVCzfzmGkwKvRHQVxi4BntVbyIwf6a4Xn62mrvndLiml6z/UBXIdEVjQLXg==",
@@ -141,6 +146,9 @@
     },
     "basic-ftp@5.0.5": {
       "integrity": "sha512-4Bcg1P8xhUuqcii/S0Z9wiHIrQVPMermM1any+MX5GeGD7faD3/msQUDGLol9wOcz4/jbg/WJnGqoJF6LiBdtg=="
+    },
+    "bezier-js@6.1.4": {
+      "integrity": "sha512-PA0FW9ZpcHbojUCMu28z9Vg/fNkwTj5YhusSAjHHDfHDGLxJ6YUKrAN2vk1fP2MMOxVw4Oko16FMlRGVBGqLKg=="
     },
     "buffer-crc32@0.2.13": {
       "integrity": "sha512-VO9Ht/+p3SN7SKWqcrgEzjGbRSJYTx+Q1pTQC0wrWqHx0vpJraQ6GtHx8tvcg1rlK1byhU5gccxgOgj7B0TDkQ=="
@@ -260,6 +268,14 @@
       "dependencies": [
         "basic-ftp",
         "data-uri-to-buffer",
+        "debug"
+      ]
+    },
+    "ghost-cursor@1.3.0": {
+      "integrity": "sha512-niTjgH8o2EhYG0vJfGB45JrLAt5CRoXg+8zWIcXtcgUgLds+i6YyFXkYuHpno9gKi93KpQvxY/uVYMV9CeeJ0w==",
+      "dependencies": [
+        "@types/bezier-js",
+        "bezier-js",
         "debug"
       ]
     },
@@ -524,6 +540,7 @@
       "jsr:@std/expect@^1.0.10",
       "jsr:@std/internal@1",
       "jsr:@std/testing@^1.0.8",
+      "npm:ghost-cursor@^1.3.0",
       "npm:rebrowser-playwright-core@^1.49.1",
       "npm:rebrowser-puppeteer-core@^23.10.3"
     ]

@@ -1,10 +1,10 @@
-import { type Spy, spy } from 'jsr:@std/testing/mock';
+import { type Spy, spy } from '@std/testing/mock';
 
 /**
  * @internal
  * The return type of {@link getSpy}.
  */
-type ReturnSpy<
+export type SpyReturnSpy<
   Self = unknown,
   // deno-lint-ignore no-explicit-any
   Method extends (...args: any[]) => any = (...args: any[]) => any,
@@ -33,7 +33,7 @@ export function getSpy<
     this: Self,
     ...args: Parameters<Method>
   ) => ReturnType<Method>,
-): ReturnSpy<Self, Method> {
+): SpyReturnSpy<Self, Method> {
   if (implementation === undefined) {
     return spy<Self, Parameters<Method>, ReturnType<Method>>();
   }
