@@ -34,6 +34,9 @@ jobs:
         with:
           chrome-version: stable
 
+      - name: Install Playwright dependencies
+        run: npx playwright install-deps
+
       - name: Run tests
         run: BROWSER_EXECUTABLE_PATH="${{ steps.setup-chrome.outputs.chrome-path }}" deno test -A
 
