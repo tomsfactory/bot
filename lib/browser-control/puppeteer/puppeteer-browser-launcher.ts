@@ -17,6 +17,14 @@ export type PuppeteerImplementation = Pick<PuppeteerNode, 'launch'>;
 export class PuppeteerBrowserLauncher
   implements BrowserLauncher<LaunchOptions, Browser> {
   /**
+   * @internal
+   */
+  private readonly necessaryArgs = [
+    // navigator.webdriver = true indicates that browser is automated. Use --disable-blink-features=AutomationControlled switch for Chrome. See https://bot-detector.rebrowser.net/
+    '--disable-blink-features=AutomationControlled',
+  ];
+
+  /**
    * Create a PuppeteerBrowserLauncher
    * @param puppeteerImplementation
    */
@@ -33,11 +41,10 @@ export class PuppeteerBrowserLauncher
       executablePath: Deno.env.get('BROWSER_EXECUTABLE_PATH'),
       headless: false,
       defaultViewport: null,
-      args: [
-        // navigator.webdriver = true indicates that browser is automated. Use --disable-blink-features=AutomationControlled switch for Chrome. See https://bot-detector.rebrowser.net/
-        '--disable-blink-features=AutomationControlled',
-      ],
-      ...options,
+      ...{
+        ...options,
+        args: [...(options?.args ?? []), ...this.necessaryArgs],
+      },
     });
   }
 }

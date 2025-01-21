@@ -15,6 +15,11 @@ describe('Playwright BrowserLauncher Integration', () => {
     browser = await launcher.launch({
       executablePath: Deno.env.get(BROWSER_EXECUTABLE_PATH),
       headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-setuid-sandbox',
+      ],
     });
   });
 

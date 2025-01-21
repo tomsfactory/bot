@@ -17,6 +17,14 @@ export type PlaywrightImplementation = Pick<BrowserType, 'launch'>;
 export class PlaywrightBrowserLauncher
   implements BrowserLauncher<LaunchOptions, Browser> {
   /**
+   * @internal
+   */
+  private readonly necessaryArgs = [
+    // navigator.webdriver = true indicates that browser is automated. Use --disable-blink-features=AutomationControlled switch for Chrome. See https://bot-detector.rebrowser.net/
+    '--disable-blink-features=AutomationControlled',
+  ];
+
+  /**
    * Create a PlaywrightBrowserLauncher
    * @param playwrightImplementation
    */
@@ -32,11 +40,10 @@ export class PlaywrightBrowserLauncher
     return this.playwrightImplementation.launch({
       executablePath: Deno.env.get('BROWSER_EXECUTABLE_PATH'),
       headless: false,
-      args: [
-        // navigator.webdriver = true indicates that browser is automated. Use --disable-blink-features=AutomationControlled switch for Chrome. See https://bot-detector.rebrowser.net/
-        '--disable-blink-features=AutomationControlled',
-      ],
-      ...options,
+      ...{
+        ...options,
+        args: [...(options?.args ?? []), ...this.necessaryArgs],
+      },
     });
   }
 }
