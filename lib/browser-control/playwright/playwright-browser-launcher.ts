@@ -5,6 +5,7 @@ import type {
 } from 'rebrowser-playwright-core';
 import { chromium } from 'rebrowser-playwright-core';
 import type { BrowserLauncher } from '../browser-launcher.ts';
+import { BROWSER_EXECUTABLE_PATH } from '../../env/env-keys.ts';
 
 /**
  * A subtype of BrowserType that includes launch.
@@ -37,13 +38,14 @@ export class PlaywrightBrowserLauncher
    * Launches a playwright browser
    */
   launch(options?: LaunchOptions): Promise<Browser> {
-    return this.playwrightImplementation.launch({
-      executablePath: Deno.env.get('BROWSER_EXECUTABLE_PATH'),
+    const option = {
+      executablePath: Deno.env.get(BROWSER_EXECUTABLE_PATH),
       headless: false,
       ...{
         ...options,
         args: [...(options?.args ?? []), ...this.necessaryArgs],
       },
-    });
+    };
+    return this.playwrightImplementation.launch(option);
   }
 }

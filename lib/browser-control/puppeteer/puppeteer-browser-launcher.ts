@@ -5,6 +5,7 @@ import type {
 } from 'rebrowser-puppeteer-core';
 import puppeteer from 'rebrowser-puppeteer-core';
 import type { BrowserLauncher } from '../browser-launcher.ts';
+import { BROWSER_EXECUTABLE_PATH } from '../../env/env-keys.ts';
 
 /**
  * A subtype of PuppeteerNode that includes launch.
@@ -38,7 +39,7 @@ export class PuppeteerBrowserLauncher
    */
   launch(options?: LaunchOptions): Promise<Browser> {
     return this.puppeteerImplementation.launch({
-      executablePath: Deno.env.get('BROWSER_EXECUTABLE_PATH'),
+      executablePath: Deno.env.get(BROWSER_EXECUTABLE_PATH),
       headless: false,
       defaultViewport: null,
       ...{
