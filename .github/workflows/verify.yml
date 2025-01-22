@@ -41,7 +41,7 @@ jobs:
       #          chrome-version: stable
 
       - name: Install Playwright dependencies
-        run: npx playwright install chrome --with-deps --yes
+        run: npx --yes playwright install chrome --with-deps
 
       - name: Run tests
         run: BROWSER_EXECUTABLE_PATH="$(which google-chrome)" deno test -A
