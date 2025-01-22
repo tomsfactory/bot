@@ -12,16 +12,16 @@ on:
 jobs:
   common:
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.49.1-noble
-      options: --user 1001
+    #    container:
+    #      image: mcr.microsoft.com/playwright:v1.49.1-noble
+    #      options: --user 1001
 
     steps:
       - name: Setup repo
         uses: actions/checkout@v4
 
-      - name: Install Deno deps
-        run: sudo apt-get install unzip
+      #      - name: Install Deno deps
+      #        run: sudo apt-get install unzip
 
       - name: Setup Deno
         uses: denoland/setup-deno@v2
