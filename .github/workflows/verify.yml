@@ -20,6 +20,9 @@ jobs:
       - name: Setup repo
         uses: actions/checkout@v4
 
+      - name: Install Deno deps
+        run: sudo apt-get install unzip
+
       - name: Setup Deno
         uses: denoland/setup-deno@v2
         with:
