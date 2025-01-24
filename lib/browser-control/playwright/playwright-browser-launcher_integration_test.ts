@@ -20,6 +20,8 @@ describe.skip('Playwright BrowserLauncher Integration', () => {
         '--no-sandbox',
         '--disable-dev-shm-usage',
         '--disable-setuid-sandbox',
+        '--disable-accelerated-2d-canvas',
+        '--disable-gpu',
       ],
     });
   });

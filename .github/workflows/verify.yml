@@ -28,14 +28,17 @@ jobs:
       - name: Run linter
         run: deno lint
 
-      - name: Setup Chrome
-        id: setup-chrome
-        uses: browser-actions/setup-chrome@v1
-        with:
-          chrome-version: stable
+#      - name: Setup Chrome
+#        id: setup-chrome
+#        uses: browser-actions/setup-chrome@v1
+#        with:
+#          chrome-version: stable
+      - name: Install Playwright Browsers
+        run: npx playwright install chrome --with-deps
 
       - name: Run tests
-        run: BROWSER_EXECUTABLE_PATH="${{ steps.setup-chrome.outputs.chrome-path }}" deno test -A
+#        run: BROWSER_EXECUTABLE_PATH="${{ steps.setup-chrome.outputs.chrome-path }}" deno test -A
+        run: BROWSER_EXECUTABLE_PATH="$(which google-chrome)" deno test -A
 
       - name: Lint documentation
         run: deno doc --lint ./lib
