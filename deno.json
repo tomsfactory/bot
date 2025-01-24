@@ -21,7 +21,10 @@
     "version:autosemver": "./scripts/auto-increment-deno-version.sh"
   },
   "fmt": {
-    "singleQuote": true
+    "singleQuote": true,
+    "exclude": [
+      "**/.github/**"
+    ]
   },
   "exclude": [
     "**/node_modules/**",
