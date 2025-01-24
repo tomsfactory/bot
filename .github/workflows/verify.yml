@@ -12,7 +12,7 @@ on:
 jobs:
   # based on https://github.com/puppeteer/puppeteer/blob/main/docker/Dockerfile
   common:
-    runs-on: node:22@sha256:fa54405993eaa6bab6b6e460f5f3e945a2e2f07942ba31c0e297a7d9c2041f62
+    runs-on: ubuntu-24.04 [Beta]
     env:
       LANG: en_US.UTF-8 # Configure default locale (important for chrome-headless-shell).
       PPTRUSER_UID: 10042 # UID of the non-root user 'pptruser'
