@@ -59,7 +59,7 @@ describe('PlaywrightBrowserLauncher', () => {
         '--disable-blink-features=AutomationControlled',
       ],
       executablePath: browserExecutablePath,
-      headless: false,
+      headless: true,
     });
   });
 

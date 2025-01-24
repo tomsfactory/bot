@@ -40,7 +40,7 @@ export class PlaywrightBrowserLauncher
   launch(options?: LaunchOptions): Promise<Browser> {
     const option = {
       executablePath: Deno.env.get(BROWSER_EXECUTABLE_PATH),
-      headless: false,
+      headless: true,
       ...{
         ...options,
         args: [...(options?.args ?? []), ...this.necessaryArgs],
