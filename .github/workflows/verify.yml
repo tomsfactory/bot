@@ -15,7 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       LANG: en_US.UTF-8 # Configure default locale (important for chrome-headless-shell).
-      PPTRUSER_UID: 10042 # UID of the non-root user 'pptruser'
       DBUS_SESSION_BUS_ADDRESS: 'autolaunch:'
 
     steps:
@@ -35,9 +34,6 @@ jobs:
             dbus \
             dbus-x11 \
             unzip
-
-      - name: Add pptruser
-        run: groupadd -r pptruser && useradd -u $PPTRUSER_UID -rm -g pptruser -G audio,video pptruser
 
       - name: Setup Deno
         uses: denoland/setup-deno@v2
