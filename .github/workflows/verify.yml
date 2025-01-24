@@ -10,30 +10,12 @@ on:
     secrets: {}
 
 jobs:
-  # based on https://github.com/puppeteer/puppeteer/blob/main/docker/Dockerfile
   common:
     runs-on: ubuntu-latest
-    env:
-      LANG: en_US.UTF-8 # Configure default locale (important for chrome-headless-shell).
-      DBUS_SESSION_BUS_ADDRESS: 'autolaunch:'
 
     steps:
       - name: Setup repo
         uses: actions/checkout@v4
-
-      - name: Install Chrome/Deno deps
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            fonts-ipafont-gothic \
-            fonts-wqy-zenhei \
-            fonts-thai-tlwg \
-            fonts-khmeros \
-            fonts-kacst \
-            fonts-freefont-ttf \
-            dbus \
-            dbus-x11 \
-            unzip
 
       - name: Setup Deno
         uses: denoland/setup-deno@v2
@@ -46,20 +28,15 @@ jobs:
       - name: Run linter
         run: deno lint
 
-      #      - name: Setup Chrome
-      #        id: setup-chrome
-      #        uses: browser-actions/setup-chrome@v1
-      #        with:
-      #          chrome-version: stable
-
-      - name: Install Playwright dependencies
-
-        run: npx --yes playwright install chrome --with-deps
+      - name: Setup Chrome
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
 
       - name: Run tests
-        env:
-          DISPLAY: ':0.0'
-        run: timeout 20s env BROWSER_EXECUTABLE_PATH="$(which google-chrome)" deno test -A
+        run: BROWSER_EXECUTABLE_PATH="${{ steps.setup-chrome.outputs.chrome-path }}" deno test -A
 
       - name: Lint documentation
         run: deno doc --lint ./lib
+
