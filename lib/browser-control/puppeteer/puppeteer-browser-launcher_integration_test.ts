@@ -6,8 +6,7 @@ import type CdpFrame from 'rebrowser-puppeteer-core/lib/cdp-frame';
 import type { RebrowserBotDetectorResult } from '../bot-detection/rebrowser-bot-detector-result.ts';
 import { BROWSER_EXECUTABLE_PATH } from '../../env/env-keys.ts';
 
-// Skip because not working in github actions
-describe.skip('Puppeteer BrowserLauncher Integration', () => {
+describe('Puppeteer BrowserLauncher Integration', () => {
   const TIME_FOR_WAITING_FOR_SWAP = 100;
 
   let browser: Browser;
