@@ -16,6 +16,7 @@ describe('Playwright BrowserLauncher Integration', () => {
       executablePath: Deno.env.get(BROWSER_EXECUTABLE_PATH),
       headless: true,
       args: [
+        '--no-sandbox',
         '--disable-dev-shm-usage',
         '--disable-setuid-sandbox',
         '--disable-accelerated-2d-canvas',
