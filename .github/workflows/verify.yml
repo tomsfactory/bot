@@ -42,6 +42,7 @@ jobs:
           export XDG_RUNTIME_DIR=/run/user/$(id -u)
           export DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/bus
           export BROWSER_EXECUTABLE_PATH="$(which google-chrome)"
+          apt-get update && apt-get install -y upower
           dbus-daemon --session --address=$DBUS_SESSION_BUS_ADDRESS --nofork --nopidfile --syslog-only &
           xvfb-run -a deno test -A
 
