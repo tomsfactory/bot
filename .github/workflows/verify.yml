@@ -12,9 +12,6 @@ on:
 jobs:
   common:
     runs-on: ubuntu-latest
-#    container:
-#      image: ghcr.io/puppeteer/puppeteer:latest
-#      options: -i --init --cap-add=SYS_ADMIN --user root
 
     steps:
       - name: Setup repo
@@ -24,12 +21,6 @@ jobs:
         uses: denoland/setup-deno@v2
         with:
           deno-version: ${{ inputs.deno-version }}
-
-#      - name: Setup Chrome
-#        id: setup-chrome
-#        uses: browser-actions/setup-chrome@v1
-#        with:
-#          install-dependencies: true
 
       - name: Verify formatting
         run: deno fmt --check
