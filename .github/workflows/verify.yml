@@ -12,9 +12,9 @@ on:
 jobs:
   common:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/puppeteer/puppeteer:latest
-      options: -i --init --cap-add=SYS_ADMIN --user root
+#    container:
+#      image: ghcr.io/puppeteer/puppeteer:latest
+#      options: -i --init --cap-add=SYS_ADMIN --user root
 
     steps:
       - name: Setup repo
@@ -25,6 +25,10 @@ jobs:
         with:
           deno-version: ${{ inputs.deno-version }}
 
+      - uses: browser-actions/setup-chrome@v1
+        with:
+          install-dependencies: true
+
       - name: Verify formatting
         run: deno fmt --check
 
@@ -34,12 +38,13 @@ jobs:
       - name: Setup dbus
         run: service dbus start
 
-      - name: Install Playwright Browsers
-        run: npx playwright install chrome --with-deps
+#      - name: Install Playwright Browsers
+#        run: npx playwright install chrome --with-deps
 
       - name: Run tests
         run: |
-          export BROWSER_EXECUTABLE_PATH="$(which google-chrome)"
+#          export BROWSER_EXECUTABLE_PATH="$(which google-chrome)"
+          export BROWSER_EXECUTABLE_PATH="${{ steps.setup-chrome.outputs.chrome-path }}"
           deno test -A
 
       - name: Lint documentation
