@@ -32,7 +32,7 @@ jobs:
         run: deno lint
 
       - name: Setup dbus
-        run: sudo service dbus start
+        run: service dbus start
 
       - name: Run tests
         run: deno test -A
