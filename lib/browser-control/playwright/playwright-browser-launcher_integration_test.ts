@@ -22,6 +22,7 @@ describe('Playwright BrowserLauncher Integration', () => {
         '--disable-accelerated-2d-canvas',
         '--disable-gpu',
       ],
+      timeout: 10_000,
     });
   });
 
