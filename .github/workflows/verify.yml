@@ -38,12 +38,9 @@ jobs:
       - name: Setup dbus
         run: service dbus start
 
-#      - name: Install Playwright Browsers
-#        run: npx playwright install chrome --with-deps
 
       - name: Run tests
         run: |
-#          export BROWSER_EXECUTABLE_PATH="$(which google-chrome)"
           export BROWSER_EXECUTABLE_PATH="${{ steps.setup-chrome.outputs.chrome-path }}"
           deno test -A
 
