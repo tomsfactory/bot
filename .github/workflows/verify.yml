@@ -12,6 +12,9 @@ on:
 jobs:
   common:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/puppeteer/puppeteer:latest
+      options: -i --init --cap-add=SYS_ADMIN
 
     steps:
       - name: Setup repo
@@ -28,23 +31,11 @@ jobs:
       - name: Run linter
         run: deno lint
 
-#      - name: Setup Chrome
-#        id: setup-chrome
-#        uses: browser-actions/setup-chrome@v1
-#        with:
-#          chrome-version: stable
-      - name: Install Playwright Browsers
-        run: npx playwright install chrome --with-deps
-
+      - name: Setup dbus
+        run: sudo service dbus start
 
       - name: Run tests
-        run: |
-          export XDG_RUNTIME_DIR=/run/user/$(id -u)
-          export DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/bus
-          export BROWSER_EXECUTABLE_PATH="$(which google-chrome)"
-          sudo apt-get update && sudo apt-get install -y upower
-          dbus-daemon --session --address=$DBUS_SESSION_BUS_ADDRESS --nofork --nopidfile --syslog-only &
-          xvfb-run -a deno test -A
+        run: deno test -A
 
       - name: Lint documentation
         run: deno doc --lint ./lib
