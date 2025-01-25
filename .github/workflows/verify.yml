@@ -38,6 +38,8 @@ jobs:
 
       - name: Run tests
 #        run: BROWSER_EXECUTABLE_PATH="${{ steps.setup-chrome.outputs.chrome-path }}" deno test -A
+        env:
+          DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/1000/bus"
         run: BROWSER_EXECUTABLE_PATH="$(which google-chrome)" deno test -A
 
       - name: Lint documentation
