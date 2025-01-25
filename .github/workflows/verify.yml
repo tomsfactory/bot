@@ -35,7 +35,9 @@ jobs:
         run: service dbus start
 
       - name: Run tests
-        run: deno test -A
+        run: |
+          export BROWSER_EXECUTABLE_PATH="$(which google-chrome)"
+          deno test -A
 
       - name: Lint documentation
         run: deno doc --lint ./lib
