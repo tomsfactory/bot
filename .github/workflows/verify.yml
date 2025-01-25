@@ -36,8 +36,7 @@ jobs:
         run: deno lint
 
       - name: Setup dbus
-        run: service dbus start
-
+        run: sudo service dbus start
 
       - name: Run tests
         run: |
