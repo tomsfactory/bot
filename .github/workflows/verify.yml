@@ -36,11 +36,14 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install chrome --with-deps
 
+
       - name: Run tests
-#        run: BROWSER_EXECUTABLE_PATH="${{ steps.setup-chrome.outputs.chrome-path }}" deno test -A
-        env:
-          DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/1000/bus"
-        run: BROWSER_EXECUTABLE_PATH="$(which google-chrome)" deno test -A
+        run: |
+          export XDG_RUNTIME_DIR=/run/user/$(id -u)
+          export DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/bus
+          export BROWSER_EXECUTABLE_PATH="$(which google-chrome)"
+          dbus-daemon --session --address=$DBUS_SESSION_BUS_ADDRESS --nofork --nopidfile --syslog-only &
+          xvfb-run -a deno test -A
 
       - name: Lint documentation
         run: deno doc --lint ./lib
