@@ -1,6 +1,6 @@
 {
   "name": "@tomsfactory/bot",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "exports": {
     ".": "./mod.ts",
     "./cloudflare": "./lib/cloudflare/mod.ts",
@@ -28,8 +28,12 @@
   },
   "lint": {
     "rules": {
-      "tags": ["recommended"],
-      "exclude": ["no-window"]
+      "tags": [
+        "recommended"
+      ],
+      "exclude": [
+        "no-window"
+      ]
     }
   },
   "exclude": [
