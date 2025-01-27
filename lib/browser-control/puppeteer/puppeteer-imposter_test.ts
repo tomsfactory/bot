@@ -1,4 +1,4 @@
-import { assertSpyCall, assertSpyCalls } from '@std/testing/mock';
+import { assertSpyCall, assertSpyCalls, returnsNext } from '@std/testing/mock';
 import { type CreateCursor, PuppeteerImposter } from './puppeteer-imposter.ts';
 import type { Frame, Page } from 'rebrowser-puppeteer-core';
 import { ElementHandle, Locator } from 'rebrowser-puppeteer-core';
@@ -15,8 +15,26 @@ const defaultOptions = {
   },
 };
 
+interface SetupParams {
+  clickImpl?: GhostCursor['click'];
+  mockEvaluateOverride?: SpyReturnSpy<Page, Page['evaluate']>;
+}
+
+function mockEvaluateInfiniteScroll(): SpyReturnSpy<Page, Page['evaluate']> {
+  return getSpy<Page, Page['evaluate']>(returnsNext([
+    Promise.resolve(1), // initial
+    Promise.resolve(), // scrollTo
+    Promise.resolve(5), // current
+    Promise.resolve(), // scrollTo
+    Promise.resolve(10), // current
+    Promise.resolve(), // scrollTo
+    Promise.resolve(10), // current
+  ]));
+}
+
 describe('PuppeteerImposter', () => {
   let mockPage: Page;
+  let mockEvaluate: SpyReturnSpy<Page, Page['evaluate']>;
   let mockClick: SpyReturnSpy<
     GhostCursor,
     (selector?: string | ElementHandle, options?: ClickOptions) => Promise<void>
@@ -44,8 +62,11 @@ describe('PuppeteerImposter', () => {
     }
   }
 
-  function setup(clickImpl?: GhostCursor['click']) {
-    mockPage = {} as Page;
+  function setup({ clickImpl, mockEvaluateOverride }: SetupParams = {}) {
+    mockEvaluate = getSpy<Page, Page['evaluate']>();
+    mockPage = {
+      evaluate: mockEvaluateOverride ?? mockEvaluate,
+    } as unknown as Page;
     mockClick = getSpy<GhostCursor, GhostCursor['click']>(clickImpl);
     mockHandle = new MockElementHandle();
     createCursorSpy = getSpy<typeof globalThis, CreateCursor>(() => ({
@@ -93,7 +114,7 @@ describe('PuppeteerImposter', () => {
       const clickImpl = () => {
         throw error;
       };
-      setup(clickImpl);
+      setup({ clickImpl });
       const mockSelector = 'button#submit';
 
       await expect(puppeteerImposter.click(mockSelector)).rejects.toThrow(
@@ -127,6 +148,44 @@ describe('PuppeteerImposter', () => {
       assertSpyCall(mockClick, 0, {
         args: [mockHandle, { hesitate: 200 }],
       });
+    });
+  });
+
+  describe('scrollToBottomInfinitely', () => {
+    it('should scroll once if there is no infinite load', async () => {
+      const mockEvaluateOverride = getSpy<Page, Page['evaluate']>(
+        returnsNext([
+          Promise.resolve(1),
+          Promise.resolve(),
+          Promise.resolve(1),
+        ]),
+      );
+      setup({ mockEvaluateOverride });
+
+      await puppeteerImposter.scrollToBottomInfinitely();
+
+      assertSpyCalls(mockEvaluateOverride, 3);
+    });
+
+    it('should scroll as many times as is necessary if there is infinite load', async () => {
+      const mockEvaluateOverride = mockEvaluateInfiniteScroll();
+      setup({ mockEvaluateOverride });
+
+      await puppeteerImposter.scrollToBottomInfinitely();
+
+      assertSpyCalls(mockEvaluateOverride, 7);
+    });
+
+    it('waits according to options between scrolling', async () => {
+      const mockEvaluateOverride = mockEvaluateInfiniteScroll();
+      setup({ mockEvaluateOverride });
+
+      await puppeteerImposter.scrollToBottomInfinitely();
+
+      assertSpyCalls(mockWaitRandom, 3);
+      assertSpyCall(mockWaitRandom, 0, { args: [200, 600] });
+      assertSpyCall(mockWaitRandom, 1, { args: [200, 600] });
+      assertSpyCall(mockWaitRandom, 2, { args: [200, 600] });
     });
   });
 });

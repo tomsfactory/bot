@@ -135,6 +135,34 @@ export class PuppeteerImposter {
   }
 
   /**
+   * Scrolls to the bottom of the webpage continuously until no further scrolling is possible.
+   * This function evaluates the current scroll height of the page and scrolls further down
+   * until the page content stops loading, or the scroll height no longer changes.
+   *
+   * @example
+   * await imposter.scrollToBottomInfinitely();
+   *
+   * @return {Promise<void>} A Promise that resolves when the bottom of the page is reached and scrolling ends.
+   */
+  async scrollToBottomInfinitely(): Promise<void> {
+    let previousScrollHeight = 0;
+    let currentScrollHeight = await this.page.evaluate(() => {
+      return document.body.scrollHeight;
+    }) as number;
+
+    while (previousScrollHeight < currentScrollHeight) {
+      previousScrollHeight = currentScrollHeight;
+      await this.page.evaluate(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+      await this.waitBetweenActions();
+      currentScrollHeight = await this.page.evaluate(() => {
+        return window.document.body.scrollHeight;
+      });
+    }
+  }
+
+  /**
    * @internal
    */
   private async waitBetweenActions() {
